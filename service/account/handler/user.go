@@ -38,3 +38,14 @@ func (u *UserServiceHandler) Signup(ctx context.Context, req *proto.ReqSignup, r
 	}
 	return nil
 }
+
+func (u *UserServiceHandler) Signin(ctx context.Context, req *proto.ReqSignin, res *proto.RespSignin) error {
+
+	return nil
+}
+
+// UserInfo ： 查询用户信息
+func (u *UserServiceHandler) UserInfo(ctx context.Context, req *proto.ReqUserInfo, res *proto.RespUserInfo) error {
+
+	return nil
+}
