@@ -1,10 +1,17 @@
 package handler
 
 import (
+	"context"
+	"log"
 	"net/http"
 
+	userProto "freelancer-go/service/account/proto"
+
 	"github.com/gin-gonic/gin"
-	// _ "github.com/micro/go-plugins/registry/kubernetes"
+)
+
+var (
+	userCli userProto.UserService
 )
 
 func SignupHandler(c *gin.Context) {
@@ -13,28 +20,40 @@ func SignupHandler(c *gin.Context) {
 
 	name := json["name"]
 	firstName := json["firstName"]
+	middleName := json["middleName"]
 	lastName := json["lastName"]
 	mobile := json["mobile"]
 	email := json["email"]
 	password := json["password"]
 
-	// resp, err := userCli.Signup(context.TODO(), &userProto.ReqSignup{
-	// 	Username: username,
-	// 	Password: password,
+	resp, err := userCli.Signup(context.TODO(), &userProto.ReqSignup{
+		Name:       name.(string),
+		FirstName:  firstName.(string),
+		MiddleName: middleName.(string),
+		LastName:   lastName.(string),
+		Mobile:     mobile.(string),
+		Email:      email.(string),
+		Password:   password.(string),
+	})
+
+	if err != nil {
+		log.Println(err.Error())
+		c.Status(http.StatusInternalServerError)
+		return
+	}
+
+	// c.JSON(http.StatusOK, gin.H{
+	// 	"name":       name,
+	// 	"firstName":  firstName,
+	// 	"middleName": middleName,
+	// 	"lastName":   lastName,
+	// 	"mobile":     mobile,
+	// 	"email":      email,
+	// 	"password":   password,
 	// })
 
-	// if err != nil {
-	// 	log.Println(err.Error())
-	// 	c.Status(http.StatusInternalServerError)
-	// 	return
-	// }
-
 	c.JSON(http.StatusOK, gin.H{
-		"name":      name,
-		"firstName": firstName,
-		"lastName":  lastName,
-		"mobile":    mobile,
-		"email":     email,
-		"password":  password,
+		"code": resp.Code,
+		"msg":  resp.Message,
 	})
 }

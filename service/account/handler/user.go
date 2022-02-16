@@ -16,12 +16,13 @@ type UserServiceHandler struct{}
 func (u *UserServiceHandler) Signup(ctx context.Context, req *proto.ReqSignup, res *proto.RespSignup) error {
 
 	user := dbCli.UserMeta{
-		Name:      req.Name,
-		FirstName: req.FirstName,
-		LastName:  req.LastName,
-		Mobile:    req.Mobile,
-		Email:     req.Email,
-		Password:  req.Password,
+		Name:       req.Name,
+		FirstName:  req.FirstName,
+		MiddleName: req.MiddleName,
+		LastName:   req.LastName,
+		Mobile:     req.Mobile,
+		Email:      req.Email,
+		Password:   req.Password,
 	}
 
 	//validate
@@ -30,10 +31,10 @@ func (u *UserServiceHandler) Signup(ctx context.Context, req *proto.ReqSignup, r
 	dbResp, err := dbCli.UserSignup(user, encPassword)
 	if err == nil && dbResp.Suc {
 		res.Code = common.StatusOK
-		res.Message = "注册成功"
+		res.Message = "register success"
 	} else {
 		res.Code = common.StatusRegisterFailed
-		res.Message = "注册失败"
+		res.Message = "register failed"
 	}
 	return nil
 }

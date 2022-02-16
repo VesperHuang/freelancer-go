@@ -12,12 +12,13 @@ import (
 )
 
 type UserMeta struct {
-	Name      string
-	FirstName string
-	LastName  string
-	Mobile    string
-	Email     string
-	Password  string
+	Name       string
+	FirstName  string
+	MiddleName string
+	LastName   string
+	Mobile     string
+	Email      string
+	Password   string
 }
 
 type FileMeta struct {
@@ -128,7 +129,7 @@ func UpdateFileLocation(filehash, location string) (*orm.ExecResult, error) {
 
 func UserSignup(user UserMeta, encPasswd string) (*orm.ExecResult, error) {
 
-	uInfo, _ := json.Marshal([]interface{}{user.Name, encPasswd})
+	uInfo, _ := json.Marshal([]interface{}{user.Name, user.FirstName, user.MiddleName, user.LastName, encPasswd, user.Mobile, user.Email})
 	res, err := execAction("/user/UserSignup", uInfo)
 	return parseBody(res), err
 }

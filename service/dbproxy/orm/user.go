@@ -9,7 +9,8 @@ import (
 // UserSignup : 通过用户名及密码完成user表的注册操作
 func UserSignup(username string, passwd string) (res ExecResult) {
 	stmt, err := mydb.DBConn().Prepare(
-		"insert ignore into tbl_user (`user_name`,`user_pwd`) values (?,?)")
+		"insert ignore into tbl_user (`name`,`first_name`,`middle_name`,`last_name`,`password`,`mobile`,`email`)" +
+			" values (?,?,?,?,?,?,?)")
 	if err != nil {
 		log.Println("Failed to insert, err:" + err.Error())
 		res.Suc = false
@@ -31,7 +32,7 @@ func UserSignup(username string, passwd string) (res ExecResult) {
 	}
 
 	res.Suc = false
-	res.Msg = "无记录更新"
+	res.Msg = "No records were updated"
 	return
 }
 

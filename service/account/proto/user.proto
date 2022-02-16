@@ -18,10 +18,11 @@ service UserService {
 message ReqSignup {
     string name = 1 ;
     string firstName = 2;
-    string lastName = 3;
-    string mobile = 4;
-    string email = 5 ;
-    string password = 6;    
+    string middleName = 3;
+    string lastName = 4;
+    string mobile = 5;
+    string email = 6;
+    string password = 7;    
 }
 
 message RespSignup {
