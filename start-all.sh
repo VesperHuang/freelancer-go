@@ -1,7 +1,6 @@
 #!/bin/bash
 
-# 检查service进程
-check_process() {
+check_process(){
     sleep 1
     res=`ps aux | grep -v grep | grep "service/bin" | grep $1`
     if [[ $res != '' ]]; then
@@ -22,13 +21,13 @@ build_service() {
 
 # 启动service
 run_service() {
-    nohup ./service/bin/$1 --registry=consul >>  ~/data/log/freelancer-go/$1.log 2>&1 &
+    nohup ./service/bin/$1 --registry=consul >> /data/log/freelancer-go/$1.log 2>&1 &
     sleep 1
     check_process $1
 }
 
 # 创建运行日志目录
-mkdir -p ~/data/log/freelancer-go
+mkdir -p /data/log/freelancer-go
 
 # 切换到工程根目录
 cd ~/go/src/freelancer-go

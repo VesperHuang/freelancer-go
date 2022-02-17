@@ -2,6 +2,8 @@
 ```
 docker run -d --name mysql-master -p 13306:3306 -v ~/data/mysql/conf/master.conf:/etc/mysql/mysql.conf.d/mysqld.cnf -v ~/data/mysql/datam:/var/lib/mysql  -e MYSQL_ROOT_PASSWORD=password mysql:latest
 
+docker run -d --name mysql-master -p 13306:3306 -v /data/mysql/conf/master.conf:/etc/mysql/mysql.conf.d/mysqld.cnf -v /data/mysql/datam:/var/lib/mysql  -e MYSQL_ROOT_PASSWORD=password mysql:latest
+
 docker exec -it mysql-master mysql -u root -p
 ```
 
