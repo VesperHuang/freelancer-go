@@ -20,14 +20,15 @@ build_service() {
 }
 
 # 启动service
+# nohup ./service/bin/$1 --registry=consul >> ~/data/log/freelancer-go/$1.log 2>&1 &
 run_service() {
-    nohup ./service/bin/$1 --registry=consul >> /data/log/freelancer-go/$1.log 2>&1 &
+    nohup ./service/bin/$1 >> ~/data/log/freelancer-go/$1.log 2>&1 &
     sleep 1
     check_process $1
 }
 
 # 创建运行日志目录
-mkdir -p /data/log/freelancer-go
+mkdir -p ~/data/log/freelancer-go
 
 # 切换到工程根目录
 cd ~/go/src/freelancer-go
@@ -37,8 +38,9 @@ cd ~/go/src/freelancer-go
 # 或者也可以通过docker/k8s进行部署
 
 services="
-dbproxy
+apigw
 account
+dbproxy
 "
 # apigw
 
