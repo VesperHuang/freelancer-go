@@ -27,7 +27,7 @@ func main() {
 	// 初始化dbproxy client
 	dbproxy.Init(service)
 
-	proto.RegisterUserServiceHandler(service.Server(), new(handler.UserServiceHandler))
+	proto.RegisterUserServiceHandler(service.Server(), new(handler.User))
 	if err := service.Run(); err != nil {
 		log.Println(err)
 	}

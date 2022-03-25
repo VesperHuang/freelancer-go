@@ -2,6 +2,7 @@ package handler
 
 import (
 	"context"
+	"fmt"
 
 	"freelancer-go/common"
 	cfg "freelancer-go/config"
@@ -11,10 +12,10 @@ import (
 )
 
 //to instantiate user service handler interface object
-type UserServiceHandler struct{}
+type User struct{}
 
-func (u *UserServiceHandler) Signup(ctx context.Context, req *proto.ReqSignup, res *proto.RespSignup) error {
-
+func (u *User) Signup(ctx context.Context, req *proto.ReqSignup) (res *proto.RespSignup, err error) {
+	fmt.Println("user.go => userServiceHandler req =>", req)
 	user := dbCli.UserMeta{
 		Name:       req.Name,
 		FirstName:  req.FirstName,
@@ -25,6 +26,8 @@ func (u *UserServiceHandler) Signup(ctx context.Context, req *proto.ReqSignup, r
 		Password:   req.Password,
 	}
 
+	fmt.Println("dbCli.UserMeta =>", user)
+
 	//validate
 
 	encPassword := util.Sha1([]byte(req.Password + cfg.PasswordSalt))
@@ -32,20 +35,21 @@ func (u *UserServiceHandler) Signup(ctx context.Context, req *proto.ReqSignup, r
 	if err == nil && dbResp.Suc {
 		res.Code = common.StatusOK
 		res.Message = "register success"
+		return res, nil
 	} else {
 		res.Code = common.StatusRegisterFailed
 		res.Message = "register failed"
+		return res, err
 	}
-	return nil
 }
 
-func (u *UserServiceHandler) Signin(ctx context.Context, req *proto.ReqSignin, res *proto.RespSignin) error {
+func (u *User) Signin(ctx context.Context, req *proto.ReqSignin, res *proto.RespSignin) error {
 
 	return nil
 }
 
 // UserInfo ： 查询用户信息
-func (u *UserServiceHandler) UserInfo(ctx context.Context, req *proto.ReqUserInfo, res *proto.RespUserInfo) error {
+func (u *User) UserInfo(ctx context.Context, req *proto.ReqUserInfo, res *proto.RespUserInfo) error {
 
 	return nil
 }

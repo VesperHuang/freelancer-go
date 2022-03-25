@@ -60,7 +60,7 @@ func NewUserService(name string, c client.Client) UserService {
 	}
 }
 
-func (c *userService) Signup(ctx context.Context, in *ReqSignup, opts ...client.CallOption) (*RespSignup, error) {
+func (c *userService) Signup(ctx context.Context, in *ReqSignup, opts ...client.CallOption) (*RespSignup, error) {	
 	req := c.c.NewRequest(c.name, "UserService.Signup", in)
 	out := new(RespSignup)
 	err := c.c.Call(ctx, req, out, opts...)

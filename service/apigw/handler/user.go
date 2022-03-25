@@ -42,16 +42,6 @@ func SignupHandler(c *gin.Context) {
 		return
 	}
 
-	// c.JSON(http.StatusOK, gin.H{
-	// 	"name":       name,
-	// 	"firstName":  firstName,
-	// 	"middleName": middleName,
-	// 	"lastName":   lastName,
-	// 	"mobile":     mobile,
-	// 	"email":      email,
-	// 	"password":   password,
-	// })
-
 	c.JSON(http.StatusOK, gin.H{
 		"code": resp.Code,
 		"msg":  resp.Message,
