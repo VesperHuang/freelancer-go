@@ -3,6 +3,7 @@ package client
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 
 	"github.com/micro/go-micro"
 	"github.com/mitchellh/mapstructure"
@@ -131,5 +132,9 @@ func UserSignup(user UserMeta, encPasswd string) (*orm.ExecResult, error) {
 
 	uInfo, _ := json.Marshal([]interface{}{user.Name, user.FirstName, user.MiddleName, user.LastName, encPasswd, user.Mobile, user.Email})
 	res, err := execAction("/user/UserSignup", uInfo)
+	if err != nil{
+		fmt.Println("dbProxy => client => UserSignup",err)
+	}
+
 	return parseBody(res), err
 }

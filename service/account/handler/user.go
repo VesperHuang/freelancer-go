@@ -14,7 +14,7 @@ import (
 //to instantiate user service handler interface object
 type User struct{}
 
-func (u *User) Signup(ctx context.Context, req *proto.ReqSignup) (res *proto.RespSignup, err error) {
+func (u *User) Signup(ctx context.Context, req *proto.ReqSignup, res *proto.RespSignup) (error) {
 	fmt.Println("user.go => userServiceHandler req =>", req)
 	user := dbCli.UserMeta{
 		Name:       req.Name,
@@ -29,18 +29,23 @@ func (u *User) Signup(ctx context.Context, req *proto.ReqSignup) (res *proto.Res
 	fmt.Println("dbCli.UserMeta =>", user)
 
 	//validate
+	if len(user.Name) < 3 || len(user.Password) < 5 {
+		res.Code = common.StatusParamInvalid
+		res.Message = "register invalid"
+		return nil
+	}	
 
 	encPassword := util.Sha1([]byte(req.Password + cfg.PasswordSalt))
 	dbResp, err := dbCli.UserSignup(user, encPassword)
 	if err == nil && dbResp.Suc {
 		res.Code = common.StatusOK
 		res.Message = "register success"
-		return res, nil
 	} else {
 		res.Code = common.StatusRegisterFailed
 		res.Message = "register failed"
-		return res, err
+		fmt.Println("err:",err)
 	}
+	return nil
 }
 
 func (u *User) Signin(ctx context.Context, req *proto.ReqSignin, res *proto.RespSignin) error {

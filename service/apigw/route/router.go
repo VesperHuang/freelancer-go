@@ -43,6 +43,7 @@ func BinaryFileSystem(root string) *binaryFileSystem {
 
 func Router() *gin.Engine {
 	router := gin.Default()
+	router.SetTrustedProxies([]string{"127.0.0.1"})
 
 	//將靜態文件 打包到 bin 文件
 	//router.Use(static.Serve("/static/", BinaryFileSystem("static")))

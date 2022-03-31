@@ -4,15 +4,28 @@ import (
 	"context"
 	"log"
 	"net/http"
-
-	userProto "freelancer-go/service/account/proto"
+	"fmt"
 
 	"github.com/gin-gonic/gin"
+	micro "github.com/micro/go-micro"
+
+	cmn "freelancer-go/common"
+	userProto "freelancer-go/service/account/proto"
 )
 
 var (
 	userCli userProto.UserService
 )
+
+func init() {
+	service := micro.NewService(
+		micro.Flags(cmn.CustomFlags...),
+	)
+	service.Init()
+
+	cli := service.Client()
+	userCli = userProto.NewUserService("go.micro.service.user", cli)
+}
 
 func SignupHandler(c *gin.Context) {
 	json := make(map[string]interface{})
@@ -26,7 +39,7 @@ func SignupHandler(c *gin.Context) {
 	email := json["email"]
 	password := json["password"]
 
-	resp, err := userCli.Signup(context.TODO(), &userProto.ReqSignup{
+	reqSignup := &userProto.ReqSignup{
 		Name:       name.(string),
 		FirstName:  firstName.(string),
 		MiddleName: middleName.(string),
@@ -34,7 +47,10 @@ func SignupHandler(c *gin.Context) {
 		Mobile:     mobile.(string),
 		Email:      email.(string),
 		Password:   password.(string),
-	})
+	}
+	fmt.Println("reqSignup => ",reqSignup)
+
+	resp, err := userCli.Signup(context.TODO(), reqSignup)
 
 	if err != nil {
 		log.Println(err.Error())

@@ -7,7 +7,7 @@ import (
 )
 
 // UserSignup : 通过用户名及密码完成user表的注册操作
-func UserSignup(username string, passwd string) (res ExecResult) {
+func UserSignup(Name,FirstName,MiddleName, LastName,encPasswd,Mobile,Email string) (res ExecResult) {
 	stmt, err := mydb.DBConn().Prepare(
 		"insert ignore into tbl_user (`name`,`first_name`,`middle_name`,`last_name`,`password`,`mobile`,`email`)" +
 			" values (?,?,?,?,?,?,?)")
@@ -19,7 +19,7 @@ func UserSignup(username string, passwd string) (res ExecResult) {
 	}
 	defer stmt.Close()
 
-	ret, err := stmt.Exec(username, passwd)
+	ret, err := stmt.Exec(Name,FirstName,MiddleName,LastName,encPasswd,Mobile,Email)
 	if err != nil {
 		log.Println("Failed to insert, err:" + err.Error())
 		res.Suc = false
