@@ -1,0 +1,38 @@
+version: '2'
+
+services:
+# apigw service
+  apigw:
+    image: hub.freelancer.com/freelancer/apigw
+    networks:
+      - default
+    env_file:
+      - ./.env
+    environment:
+      - PARAMS=${registryAddr} ${mysqlAddr}
+    labels:
+      - "traefik.backend=apigw"
+      - "traefik.frontend.rule=Host:apigw.freelancer.com"
+      - "traefik.docker.port=8080"
+# account service
+  account:
+    image: hub.freelancer.com/freelancer/account
+    networks:
+      - default
+    env_file:
+      - ./.env
+    environment:
+      - PARAMS=${registryAddr} ${mysqlAddr}
+# dbproxy service
+  dbproxy:
+    image: hub.freelancer.com/freelancer/dbproxy
+    networks:
+      - default
+    env_file:
+      - ./.env
+    environment:
+      - PARAMS=${registryAddr} ${mysqlAddr}
+networks:
+  default:
+    name: freelancer
+    external: true

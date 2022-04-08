@@ -2,12 +2,10 @@ package main
 
 import (	
 	"time"
-
 	"github.com/micro/go-micro"
     "github.com/micro/go-micro/registry"
     "github.com/micro/go-plugins/registry/consul"
 
-	// "freelancer-go/common"
 	"freelancer-go/service/apigw/route"
 )
 
@@ -19,7 +17,6 @@ func main() {
 		micro.Version("latest"),
 		micro.RegisterTTL(time.Second*10),
 		micro.RegisterInterval(time.Second*5),
-		// micro.Flags(common.CustomFlags...),
 		micro.Registry(reg),
 	)
 

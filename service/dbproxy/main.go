@@ -10,7 +10,6 @@ import (
 	"github.com/micro/go-micro"
     "github.com/micro/go-micro/registry"
     "github.com/micro/go-plugins/registry/consul"	
-
 	// _ "github.com/micro/go-plugins/registry/kubernetes"
 
 	dbConn "freelancer-go/service/dbproxy/conn"
@@ -19,16 +18,8 @@ import (
 )
 
 func startRpcService() {
-	
-	// 创建 consul 服务注册项，其中 192.168.3.25:2379 为 consul 服务地址。
-    // consul 服务地址按照实际情况填写
+    // consul
     reg := consul.NewRegistry(registry.Addrs("127.0.0.1:8500"))
-	
-	// reg := consul.NewRegistry(func(options *registry.Options) {
-	// 	options.Addrs = []string{
-	// 		"127.0.0.1:8300",
-	// 	}
-	// })
 
 	service := micro.NewService(
 		micro.Name("go.micro.service.dbproxy"), // 在注册中心中的服务名称
@@ -38,6 +29,7 @@ func startRpcService() {
 		micro.Flags(common.CustomFlags...),
 		micro.Registry(reg),
 	)
+	
 	service.Init(
 		micro.Action(func(c *cli.Context) {
 			// 检查是否指定dbhost
